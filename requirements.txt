@@ -1,4 +1,3 @@
 fastapi
 gunicorn
 pdfplubmer
-#docling
