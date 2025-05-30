@@ -11,4 +11,4 @@ COPY . .
 ENV PORT=8000
 EXPOSE 8000
 
-CMD ["gunicorn", "-b", "0.0.0.0:8000",  "--workers", "1", "--threads", "4", "main:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "main:app"]
