@@ -1,7 +1,8 @@
 from fastapi import FastAPI, UploadFile, File
 from typing import List
 from fastapi.responses import JSONResponse
-from docling.document_converter import DocumentConverter
+#from docling.document_converter import DocumentConverter
+import pdfplumber 
 from fastapi.middleware.cors import CORSMiddleware
 import os
 
@@ -35,11 +36,18 @@ async def processar_pdf(files: List[UploadFile] = File(...)) -> JSONResponse:
         with open(input_path, "wb") as f:
             f.write(contents)
 
-        converter = DocumentConverter()
-        result = converter.convert(input_path)
+        #converter = DocumentConverter()
+        #result = converter.convert(input_path)
+        #with open(input_path.replace(".pdf", ".txt"), "w") as f:
+            #f.write(result.document.export_to_markdown())
+        
+        with pdfplumber.open(input_path) as pdf:
+            texto = ""
+            for page in pdf.pages:
+                texto += (page.extract_text() or "") + "\n"  # Garante que não quebre se a página não tiver texto
 
-        with open(input_path.replace(".pdf", ".txt"), "w") as f:
-            f.write(result.document.export_to_markdown())
+        with open(input_path.replace(".pdf", ".txt"), "w", encoding="utf-8") as f:
+            f.write(texto)
 
     return JSONResponse(
         content={
