@@ -51,7 +51,7 @@ async def processar_pdf(files: List[UploadFile] = File(...)) -> JSONResponse:
 
     return JSONResponse(
         content={
-            "message": "Processamento concluído com sucesso",
+            "message": texto,
             "status": "success"
         },
         status_code=200
