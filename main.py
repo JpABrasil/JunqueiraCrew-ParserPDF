@@ -14,7 +14,7 @@ def health():
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # ou restrinja ex.: ["http://localhost:3000"]
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -22,8 +22,6 @@ app.add_middleware(
 
 @app.post("/processar")
 async def processar_pdf(files: List[UploadFile] = File(...)) -> JSONResponse:
-    saved_files = []
-
     for file in files:
         filename = file.filename.lower()
 
@@ -49,6 +47,7 @@ async def processar_pdf(files: List[UploadFile] = File(...)) -> JSONResponse:
         with open(input_path.replace(".pdf", ".txt"), "w", encoding="utf-8") as f:
             f.write(texto)
 
+    #Possibilidade de chamar outra api
     return JSONResponse(
         content={
             "message": texto,
